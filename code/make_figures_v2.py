@@ -42,7 +42,7 @@ from matplotlib.patches import FancyArrowPatch, FancyBboxPatch
 BASE = os.path.dirname(os.path.abspath(__file__))
 RES = os.path.abspath(os.path.join(BASE, '..', 'results'))
 MON = os.path.join(RES, 'monitor')
-OUT = os.path.abspath(os.path.join(BASE, '..', 'figures_v2'))
+OUT = os.environ.get("MOSQ_FIG_OUT") or os.path.abspath(os.path.join(BASE, '..', 'figures_v2'))
 QA = '/tmp/figqa_v2'
 os.makedirs(OUT, exist_ok=True)
 os.makedirs(QA, exist_ok=True)
@@ -155,16 +155,16 @@ def fig1_framework():
             r'$R_t \;=\; [\,BI_t - BI_{thr}\,]_{+}^{2} \;-\; \alpha \sum_g cost_g(t)$'
             '\nthreshold-excess morbidity  minus  scaled intervention cost',
             ha='center', va='center', fontsize=8.0, color=INK, linespacing=1.5)
-    ax.add_patch(FancyArrowPatch((xs[2] - 6.0, CY - H / 2 - 0.3),
-                                 (RB_CX - 12.0, RB_CY + RB_H / 2 + 0.3),
+    # feedback arrows: straight leaders only; labels kept clear of the lines
+    ax.add_patch(FancyArrowPatch((xs[2], CY - H / 2 - 0.4),
+                                 (xs[2], RB_CY + RB_H / 2 + 0.4),
                                  arrowstyle='-|>', mutation_scale=13, lw=1.4, color=C_NONE))
-    ax.text(xs[2] - 8.6, (CY - H / 2 + RB_CY + RB_H / 2) / 2, 'state',
+    ax.text(xs[2] - 4.5, (CY - H / 2 + RB_CY + RB_H / 2) / 2, 'state',
             ha='right', va='center', fontsize=8.0, color=C_NONE)
-    ax.add_patch(FancyArrowPatch((RB_CX + 24.0, RB_CY + RB_H / 2 + 0.3),
-                                 (xs[4] - 3.0, CY - H / 2 - 0.3),
-                                 arrowstyle='-|>', mutation_scale=13, lw=1.4, color=C_PPO,
-                                 connectionstyle='arc3,rad=-0.12'))
-    ax.text(RB_CX + 30.0, (RB_CY + RB_H / 2 + CY - H / 2) / 2, 'reward',
+    ax.add_patch(FancyArrowPatch((RB_CX + RB_W / 2 - 5, RB_CY + RB_H / 2 + 0.4),
+                                 (xs[4], CY - H / 2 - 0.4),
+                                 arrowstyle='-|>', mutation_scale=13, lw=1.4, color=C_PPO))
+    ax.text(RB_CX + RB_W / 2 + 3.0, RB_CY + RB_H / 2 + 7.0, 'reward',
             ha='left', va='center', fontsize=8.0, color=C_PPO)
     save(fig, 'Figure1')
 
@@ -249,11 +249,16 @@ def fig4_cap_bind():
             label='Weeks exactly at the ceiling')
     ax.plot(xx, b['frac_weeks_zero'], 's--', color=C_MPC, lw=1.7, ms=6.0,
             label='Weeks with no intervention')
+    # value labels placed in whitespace, clear of both series and the axes
+    offs = {2: (-8, 0, 'right', 'center'), 4: (0, -13, 'center', 'top'),
+            6: (0, -13, 'center', 'top'), 8: (0, -13, 'center', 'top'),
+            12: (0, -13, 'center', 'top')}
     for x, yv in zip(xx, b['frac_weeks_at_cap']):
+        dx, dy, ha, va = offs.get(int(x), (0, 9, 'center', 'bottom'))
         ax.annotate('%.3f' % yv, (x, yv), textcoords='offset points',
-                    xytext=(0, 7), ha='center', fontsize=7.6, color=INK)
+                    xytext=(dx, dy), ha=ha, va=va, fontsize=7.6, color=INK)
     ax.set_xticks([2, 4, 6, 8, 12]); ax.set_xticklabels(['2', '4', '6', '8', '12'])
-    ax.set_xlim(1, 13); ax.set_ylim(-0.03, 0.60)
+    ax.set_xlim(1, 13); ax.set_ylim(-0.10, 0.60)
     ax.set_xlabel('Weekly ceiling  C$_{max}$  (no-cap value undefined: constraint inactive)')
     ax.set_ylabel('Fraction of weeks (PPO policy)')
     ax.legend(loc='upper right', frameon=False, fontsize=8.2)
@@ -332,9 +337,10 @@ def fig5_action_space():
         ax1.axhline(mv, color=C_PPO, ls='--', lw=1.2, zorder=3)
         ax1.text(1500, mv + 0.012, 'MultiDiscrete status quo\n(%.3f, n = 10)' % mv,
                  fontsize=7.4, color=C_PPO, va='bottom', ha='left')
-    for k, cm in [(56, 'C$_{max}$ = 2, n = 10'), (486, 'C$_{max}$ = 4, n = 10'),
-                  (6498, 'C$_{max}$ = 8, n = 10')]:
-        ax1.annotate(cm, (k, ylo + 0.03), ha='center', fontsize=6.9, color=INK)
+    for k, cm in [(56, 'C$_{max}$ = 2\nn = 10'), (486, 'C$_{max}$ = 4\nn = 10'),
+                  (6498, 'C$_{max}$ = 8\nn = 10')]:
+        ax1.annotate(cm, (k, ylo + 0.02), ha=('left' if k == 56 else 'center'),
+                     va='bottom', fontsize=6.9, color=INK, linespacing=1.15)
     rnd = ps[ps['arm'] == 'rnd56']
     if not rnd.empty:
         ax1.errorbar(56, rnd['ret_mean'].iloc[0], yerr=rnd['ret_sd'].iloc[0],
@@ -464,10 +470,6 @@ def fig8_cost_health():
     for cm, g in s.groupby('Cmax_num'):
         ax.scatter(g['cost'], g['bi_mean'], s=46, color=cmap[cm],
                    edgecolor='white', linewidth=0.6, zorder=3, label=lbl[cm])
-    for _, r in s.iterrows():
-        ax.annotate(lbl[r['Cmax_num']], (r['cost'], r['bi_mean']),
-                    textcoords='offset points', xytext=(5, 3),
-                    fontsize=6.4, color=cmap[r['Cmax_num']])
     ax.set_xlabel('Total 2022 control cost (relative units)')
     ax.set_ylabel('Mean BI in 2022')
     ax.set_xlim(-12, 245)
@@ -525,12 +527,18 @@ def fig10_robustness():
               for v in d['mean_bi']]
     ax.barh(y, d['mean_bi'], color=colors, height=0.62, zorder=2)
     for yi, v in zip(y, d['mean_bi']):
-        ax.text(v + 0.02, yi, '%.2f' % v, va='center', ha='left', fontsize=8.4, color=INK, zorder=4)
+        # keep the value label from crossing the vertical nominal line
+        if v < nom and (v + 0.15) > nom:
+            ax.text(v - 0.02, yi, '%.2f' % v, va='center', ha='right',
+                    fontsize=8.4, color=INK, zorder=4)
+        else:
+            ax.text(v + 0.02, yi, '%.2f' % v, va='center', ha='left',
+                    fontsize=8.4, color=INK, zorder=4)
     ax.axvline(nom, color=INK, ls='--', lw=1.2, zorder=3)
-    ax.text(nom + 0.015, len(d) - 0.35, 'nominal = %.2f\n(no retraining)' % nom,
-            fontsize=7.8, color=INK, va='top', ha='left')
+    ax.text(nom + 0.02, len(d) + 0.02, 'nominal = %.2f\n(no retraining)' % nom,
+            fontsize=7.8, color=INK, va='top', ha='left', zorder=5)
     ax.set_yticks(y); ax.set_yticklabels(d['label'], fontsize=8.3)
-    ax.set_xlim(0, d['mean_bi'].max() * 1.12); ax.set_ylim(-0.6, len(d) - 0.2)
+    ax.set_xlim(0, d['mean_bi'].max() * 1.12); ax.set_ylim(-0.6, len(d) + 0.45)
     ax.set_xlabel('Mean BI in 2022, fixed trained policy (no retraining)')
     tidy(ax, grid='x')
     fig.subplots_adjust(left=0.34, right=0.97)
