@@ -38,9 +38,12 @@ code/
   make_figures.py       original figures (Figure1..Figure8)
   make_figures_v2.py    manuscript figures (Figure1..Figure13, TIFF 600 dpi LZW + PDF)
   run_all.sh, run_battery_resumable.sh
-models/                 trained policies (*.zip) + VecNormalize stats (*.pkl).
-                        Large (~600 MB); the published archive is on Zenodo
-                        (see "Data availability").
+models/                 Placeholder for the trained policies (*.zip) and their
+                        VecNormalize stats (*.pkl). They are NOT distributed:
+                        the full set exceeds 1 GB, dominated by the
+                        flattened-full-space arms, whose action head has
+                        59,049 outputs. See models/README.md and regenerate
+                        them with the fixed seeds before evaluating.
 results/                every evaluation output, including
   panel_data.csv        10 grids x 416 weeks (2015-2022): ERA5 weather, PFI,
                         urbanisation scale, simulated baseline BI
@@ -77,14 +80,22 @@ requirements.txt
 
 ## Quick start
 
+**The trained policies are not distributed** — the full set exceeds 1 GB, dominated by the flattened-full-space arms. Every command below evaluates policies that must already be on disk, so train them first using the fixed seeds; `models/README.md` lists the full set, the exact commands and the approximate cost per arm.
+
 ```bash
 pip install -r requirements.txt
 cd code
 
-# main paired evaluation on the held-out year
+# 0) train the policies first (fixed seeds; see models/README.md)
+python train_ppo.py --algo ppo --seed 0 --steps 400000 --name ppo_cinf_s0
+python k_confound.py --mode train --workers 3        # action-space control arms
+python loyo.py --mode train --workers 3              # cross-validation folds
+python capacity_sweep.py --mode train --workers 3 --only ppo
+
+# 1) main paired evaluation on the held-out year
 python evaluate.py --reps 10
 
-# weekly capacity sweep (uses shipped models where available)
+# weekly capacity sweep (evaluates the policies on disk)
 python capacity_sweep.py --mode eval
 
 # leave-one-year-out cross-validation
