@@ -1,0 +1,7 @@
+C_max,threshold_trigger,calendar_sr,calendar_period,threshold_params,calendar_params
+2,5.0,3,2,trigger=5,"sr_trigger=3,period=2"
+4,5.0,3,2,trigger=5,"sr_trigger=3,period=2"
+6,5.0,3,2,trigger=5,"sr_trigger=3,period=2"
+8,5.0,3,2,trigger=5,"sr_trigger=3,period=2"
+12,5.0,3,2,trigger=5,"sr_trigger=3,period=2"
+inf,5.0,3,2,trigger=5,"sr_trigger=3,period=2"

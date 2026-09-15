@@ -1,0 +1,6 @@
+# model weights are distributed via the archived release, not via git
+models/*.zip
+models/*.pkl
+__pycache__/
+*.pyc
+.DS_Store

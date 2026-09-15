@@ -1,0 +1,64 @@
+[k-train] 36/36 jobs to run, 3 workers
+[k-train] start ppo_nest56_s0 (1 running)
+[k-train] start ppo_nest56_s1 (2 running)
+[k-train] start ppo_nest56_s2 (3 running)
+[k-train] done ppo_nest56_s0 rc=0 227s ok=True
+[k-train] done ppo_nest56_s1 rc=0 227s ok=True
+[k-train] start ppo_nest56_s3 (2 running)
+[k-train] start ppo_nest56_s4 (3 running)
+[k-train] done ppo_nest56_s2 rc=0 229s ok=True
+[k-train] start ppo_nest56_s5 (3 running)
+[k-train] done ppo_nest56_s3 rc=0 198s ok=True
+[k-train] done ppo_nest56_s4 rc=0 198s ok=True
+[k-train] start ppo_nest56_s6 (2 running)
+[k-train] start ppo_nest56_s7 (3 running)
+[k-train] done ppo_nest56_s5 rc=0 198s ok=True
+[k-train] start ppo_nest56_s8 (3 running)
+[k-train] done ppo_nest56_s6 rc=0 191s ok=True
+[k-train] done ppo_nest56_s7 rc=0 191s ok=True
+[k-train] done ppo_nest56_s8 rc=0 189s ok=True
+[k-train] start ppo_nest56_s9 (1 running)
+[k-train] start ppo_nest486_s0 (2 running)
+[k-train] start ppo_nest486_s1 (3 running)
+[k-train] done ppo_nest56_s9 rc=0 187s ok=True
+[k-train] start ppo_nest486_s2 (3 running)
+[k-train] done ppo_nest486_s0 rc=0 213s ok=True
+[k-train] done ppo_nest486_s1 rc=0 213s ok=True
+[k-train] start ppo_nest486_s3 (2 running)
+[k-train] start ppo_nest486_s4 (3 running)
+[k-train] done ppo_nest486_s2 rc=0 257s ok=True
+[k-train] start ppo_nest486_s5 (3 running)
+[k-train] done ppo_nest486_s4 rc=0 267s ok=True
+[k-train] start ppo_nest486_s6 (3 running)
+[k-train] done ppo_nest486_s3 rc=0 269s ok=True
+[k-train] start ppo_nest486_s7 (3 running)
+[k-train] done ppo_nest486_s5 rc=0 311s ok=True
+[k-train] start ppo_nest486_s8 (3 running)
+[k-train] done ppo_nest486_s6 rc=0 319s ok=True
+[k-train] done ppo_nest486_s7 rc=0 317s ok=True
+[k-train] start ppo_nest486_s9 (2 running)
+[k-train] start ppo_nest6498_s0 (3 running)
+[k-train] done ppo_nest486_s8 rc=0 379s ok=True
+[k-train] start ppo_nest6498_s1 (3 running)
+[k-train] done ppo_nest486_s9 rc=0 373s ok=True
+[k-train] start ppo_nest6498_s2 (3 running)
+[k-train] done ppo_nest6498_s0 rc=0 909s ok=True
+[k-train] start ppo_nest6498_s3 (3 running)
+[k-train] done ppo_nest6498_s1 rc=0 880s ok=True
+[k-train] start ppo_nest6498_s4 (3 running)
+[k-train] done ppo_nest6498_s2 rc=0 870s ok=True
+[k-train] start ppo_nest6498_s5 (3 running)
+[k-train] done ppo_nest6498_s3 rc=0 820s ok=True
+[k-train] start ppo_nest6498_s6 (3 running)
+[k-train] done ppo_nest6498_s4 rc=0 902s ok=True
+[k-train] start ppo_nest6498_s7 (3 running)
+[k-train] done ppo_nest6498_s5 rc=0 934s ok=True
+[k-train] start ppo_nest6498_s8 (3 running)
+[k-train] done ppo_nest6498_s6 rc=0 1213s ok=True
+[k-train] start ppo_nest6498_s9 (3 running)
+[k-train] done ppo_nest6498_s7 rc=0 1319s ok=True
+[k-train] start ppo_nest59049_s0 (3 running)
+[k-train] done ppo_nest6498_s8 rc=0 1347s ok=True
+[k-train] start ppo_nest59049_s1 (3 running)
+[k-train] done ppo_nest6498_s9 rc=0 1381s ok=True
+[k-train] start ppo_nest59049_s2 (3 running)

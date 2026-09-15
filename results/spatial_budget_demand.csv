@@ -1,0 +1,2 @@
+eval_seed,min_weekly_cost,mean_weekly_cost,p95_weekly_cost,max_weekly_cost,weeks,n_sr_total,n_sp_total
+10000,0.0,0.76,4.099999999999994,7.0,50,38,0

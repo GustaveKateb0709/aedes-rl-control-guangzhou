@@ -1,0 +1,4 @@
+[train] 84/84 jobs to run, 3 workers
+[train] start ppo_c2_s0 (1 running)
+[train] start ppo_c2_s1 (2 running)
+[train] start ppo_c2_s2 (3 running)
